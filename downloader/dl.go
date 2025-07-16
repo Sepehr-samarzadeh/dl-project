@@ -4,9 +4,17 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strings"
 )
 
+type File_type struct {
+	Audio   bool
+	Picture bool
+	Movie   bool
+}
+
 type DlObject struct {
+	*File_type
 	File_name string
 	File_size byte
 	File_url  string
@@ -14,6 +22,7 @@ type DlObject struct {
 
 func (d *DlObject) SaveData(body_content *http.Response) error {
 	d.File_name = "testfile0.0.0.1.mp3" //TODO: we need filetypes for .png,.jpeg,.txt and ...
+
 	file, err := os.Create(d.File_name)
 	if err != nil {
 		return err
@@ -29,6 +38,9 @@ func (d *DlObject) SaveData(body_content *http.Response) error {
 }
 
 func (d *DlObject) FetchData(siteUrl string) error {
+	if strings.Contains(siteUrl, ".mp3") { //find a way to recognize the type
+
+	}
 	data, err := http.Get("http://" + siteUrl)
 
 	if err != nil {
